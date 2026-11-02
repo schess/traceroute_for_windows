@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <!--
+    MSI installer for the Traceroute utility.
+    Installs traceroute.exe into the Windows System directory (System32)
+    so the command is available from any console.
+
+    Build:  wix build installer.wxs -o traceroute.msi
+  -->
+  <Package Name="Traceroute"
+           Manufacturer="Traceroute"
+           Version="1.0.0.0"
+           ProductCode="56FDF6DA-6524-460D-8580-16A38650E71E"
+           UpgradeCode="A8F5BD4F-04CE-40E0-9BA8-FFBF92D75DA4"
+           Scope="perMachine"
+           Compressed="yes">
+
+    <SummaryInformation Description="Traceroute - a full analog of the Linux traceroute (Microsoft Windows Installer)" />
+
+    <!-- handle upgrades / remove previous versions -->
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Traceroute is already installed." />
+
+    <!-- single embedded CAB, no external files -->
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- install into the 64-bit System32 directory (real C:\Windows\System32) -->
+    <StandardDirectory Id="System64Folder" />
+
+    <ComponentGroup Id="ProductComponents" Directory="System64Folder">
+      <Component Id="TracerouteEXE" Guid="9362E5B4-1A4A-4B10-9C7E-0E8F2F6E9C11">
+        <File Id="traceroute_exe" Source="publish\traceroute.exe" />
+      </Component>
+    </ComponentGroup>
+
+    <Feature Id="MainFeature" Title="Traceroute" Display="expand" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Package>
+</Wix>
